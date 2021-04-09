@@ -1,12 +1,11 @@
 package com.uestc.getthecourse.controller;
 
+import com.uestc.getthecourse.result.Result;
 import com.uestc.getthecourse.service.UserService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/user")
@@ -16,8 +15,9 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/login")
-    public boolean login(@RequestParam("studentId") String studentId, @RequestParam("password") String password){
-        return userService.login(studentId, password);
+    @ResponseBody
+    public Result<String> login(@RequestParam("studentId") String studentId, @RequestParam("password") String password, HttpServletResponse response){
+        return userService.login(studentId, password,response);
     }
 
 }

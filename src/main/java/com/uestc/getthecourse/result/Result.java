@@ -34,4 +34,16 @@ public class Result<T> {
     public static <T> Result<T> error(CodeMsg codeMsg) {
         return new Result<T>(codeMsg);
     }
+
+    public int getCode() {
+        return code;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public T getData() {
+        return data;
+    }
 }
