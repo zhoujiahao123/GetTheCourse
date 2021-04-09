@@ -4,6 +4,9 @@ package com.uestc.getthecourse.service;
 import com.mysql.jdbc.StringUtils;
 import com.uestc.getthecourse.dao.UserDao;
 import com.uestc.getthecourse.entity.Student;
+import com.uestc.getthecourse.exception.GlobalException;
+import com.uestc.getthecourse.result.CodeMsg;
+import com.uestc.getthecourse.result.Result;
 import com.uestc.getthecourse.util.MD5Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,15 +21,16 @@ public class UserService {
     @Resource
     UserDao userDao;
 
-    public boolean login(String studentId, String password) {
+    public Result<String> login(String studentId, String password) {
         Student student = userDao.getUserById(studentId);
-        logger.info(student.toString());
+        if(student == null) throw new GlobalException(CodeMsg.USER_EMPTY);
         String salt = student.getSlat();
         String dbPassword = student.getPassword();
         String inputPassword = MD5Util.inputPassToDBPass(password,salt);
         if(dbPassword.equals(inputPassword)){
-            return true;
+            //todo 放入redis
+            return null;
         }
-        return false;
+        return Result.error(CodeMsg.USER_PASSWORD_ERROR);
     }
 }
