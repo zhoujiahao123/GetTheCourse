@@ -22,6 +22,7 @@ public class CodeMsg {
     public static CodeMsg SERVER_ERROR = new CodeMsg(503, "服务端异常");
     public static CodeMsg BIND_ERROR = new CodeMsg(504, "参数校验异常：%s");
     public static CodeMsg DB_ERROR = new CodeMsg(505, "数据库与Redis不一致");
+    public static CodeMsg INVALID_TOKEN = new CodeMsg(506, "无效的token");
 
     public int getCode() {
         return code;

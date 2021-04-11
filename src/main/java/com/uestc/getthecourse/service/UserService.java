@@ -30,6 +30,12 @@ public class UserService {
     @Resource
     RedisService redisService;
 
+    public Student getStudentByToken(String token) {
+        Student student = redisService.get(UserKey.user_token, token, Student.class);
+        if (student == null) throw new GlobalException(CodeMsg.INVALID_TOKEN);
+        return student;
+    }
+
     /**
      * 用户登录
      * 1.数据库中查用户是否存在

@@ -5,15 +5,18 @@ import com.uestc.getthecourse.result.CodeMsg;
 import com.uestc.getthecourse.result.Result;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@ControllerAdvice
-@ResponseBody
+/**
+ * 使用RestControllerAdvice可以代替@ControllerAdvice+@ResponseBody
+ * 一个全局的异常处理类：
+ *
+ */
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
