@@ -6,9 +6,11 @@ import org.springframework.stereotype.Service;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
+import javax.annotation.Resource;
+
 @Service
 public class RedisPoolFactory {
-    @Autowired
+    @Resource
     RedisConfig redisConfig;
 
     @Bean
