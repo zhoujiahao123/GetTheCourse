@@ -16,6 +16,7 @@ public class Result<T> {
         this.data = data;
     }
 
+
     /**
      * 返回错误的结果
      *
@@ -30,6 +31,7 @@ public class Result<T> {
     public static <T> Result<T> success(T data) {
         return new Result<T>(data);
     }
+
 
     public static <T> Result<T> error(CodeMsg codeMsg) {
         return new Result<T>(codeMsg);

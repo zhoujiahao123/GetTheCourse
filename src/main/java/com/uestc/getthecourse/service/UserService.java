@@ -1,7 +1,6 @@
 package com.uestc.getthecourse.service;
 
 
-import com.mysql.jdbc.StringUtils;
 import com.uestc.getthecourse.config.Const;
 import com.uestc.getthecourse.dao.UserDao;
 import com.uestc.getthecourse.entity.Student;
@@ -35,6 +34,7 @@ public class UserService {
         if (student == null) throw new GlobalException(CodeMsg.INVALID_TOKEN);
         return student;
     }
+
 
     /**
      * 用户登录
@@ -74,6 +74,30 @@ public class UserService {
         int resCount = userDao.updateInfo(student.getStudentId(), classes);
         if (resCount <= 0) throw new GlobalException(CodeMsg.DB_ERROR);
         return Result.success(true);
+    }
+
+    private static final String SUCCESS_UPDATE_PSW = "修改密码成功";
+
+    /**
+     * 修改密码
+     * @param sId 学生学号
+     * @param psw 学生密码
+     * @param newPsw 新密码
+     * @return
+     */
+    public Result<String> updatePaw(String sId, String psw, String newPsw) {
+        Student student = userDao.getUserById(sId);
+        if (student == null) throw new GlobalException(CodeMsg.USER_EMPTY);
+        String salt = student.getSlat();
+        String dbPassword = student.getPassword();
+        String inputPassword = MD5Util.inputPassToDBPass(psw, salt);
+        if (dbPassword.equals(inputPassword)) {
+            newPsw = MD5Util.inputPassToDBPass(newPsw, salt);
+            int result = userDao.updatePsw(sId, newPsw);
+            if (result > 0) return Result.success(SUCCESS_UPDATE_PSW);
+            return Result.error(CodeMsg.SERVER_ERROR);
+        }
+        throw new GlobalException(CodeMsg.USER_PASSWORD_ERROR);
     }
 
     public void addCookie(HttpServletResponse response, String token, Student student) {

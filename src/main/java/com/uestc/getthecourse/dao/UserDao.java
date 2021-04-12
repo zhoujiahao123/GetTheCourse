@@ -11,6 +11,10 @@ public interface UserDao {
     @Select("select * from student where student.student_id = #{studentId}")
     Student getUserById(@Param("studentId") String studentId);
 
+
     @Update("update student set student.classes = #{classes} where student.student_id = #{sId}")
     int updateInfo(@Param("sId") String sId,@Param("classes") String classes);
+
+    @Update("update student set student.password = #{password} where student.student_id = #{sId}")
+    int updatePsw(@Param("sId") String sId,@Param("password") String psw);
 }

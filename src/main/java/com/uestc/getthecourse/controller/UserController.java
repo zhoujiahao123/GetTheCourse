@@ -27,8 +27,7 @@ public class UserController {
     }
 
     @PostMapping("/update_Pas")
-    public Result<String> updatePassword(@RequestParam("sId") String sId, @RequestParam("pws") String password, @RequestParam("newPsw") String newPsw) {
-        return null;
+    public Result<String> updatePassword(@RequestParam("sId") String sId, @RequestParam("psw") String password, @RequestParam("newPsw") String newPsw) {
+        return userService.updatePaw(sId, password, newPsw);
     }
-
 }
