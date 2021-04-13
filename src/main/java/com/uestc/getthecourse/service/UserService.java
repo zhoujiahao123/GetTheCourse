@@ -29,9 +29,10 @@ public class UserService {
     @Resource
     RedisService redisService;
 
-    public Student getStudentByToken(String token) {
+    public Student getStudentByToken(String token, HttpServletResponse response) {
         Student student = redisService.get(UserKey.user_token, token, Student.class);
         if (student == null) throw new GlobalException(CodeMsg.INVALID_TOKEN);
+        addCookie(response, token, student);
         return student;
     }
 
@@ -80,8 +81,9 @@ public class UserService {
 
     /**
      * 修改密码
-     * @param sId 学生学号
-     * @param psw 学生密码
+     *
+     * @param sId    学生学号
+     * @param psw    学生密码
      * @param newPsw 新密码
      * @return
      */

@@ -24,6 +24,9 @@ public class CodeMsg {
     public static CodeMsg DB_ERROR = new CodeMsg(505, "数据库与Redis不一致");
     public static CodeMsg INVALID_TOKEN = new CodeMsg(506, "无效的token");
     public static CodeMsg EMPTY_COURSES = new CodeMsg(507, "当前没有课程");
+    public static CodeMsg NEED_LOGIN = new CodeMsg(508, "用户未登录");
+    public static CodeMsg TOKEN_INVALID = new CodeMsg(509, "Token已过期，需要重新登录");
+    public static CodeMsg COOKIE_NOT_PRESENT = new CodeMsg(510, "请检查是否上传Cookie");
 
     public int getCode() {
         return code;

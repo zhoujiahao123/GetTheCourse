@@ -1,8 +1,9 @@
 package com.uestc.getthecourse.config;
-
 import com.uestc.getthecourse.entity.Student;
+import com.uestc.getthecourse.exception.GlobalException;
 import com.uestc.getthecourse.redis.RedisService;
 import com.uestc.getthecourse.redis.UserKey;
+import com.uestc.getthecourse.result.CodeMsg;
 import com.uestc.getthecourse.service.UserService;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -24,19 +24,18 @@ public class UserInfoHandlerMethodArgumentResolver implements HandlerMethodArgum
 
     /**
      * 判断哪些方法需要被方法参数解析器解析，带有注解Userinfo的参数都需要被解析。
+     *
      * @param methodParameter
      * @return
      */
     @Override
     public boolean supportsParameter(MethodParameter methodParameter) {
-        if (methodParameter.hasParameterAnnotation(UserInfo.class)) {
-            return true;
-        }
-        return false;
+        return methodParameter.hasParameterAnnotation(UserInfo.class);
     }
 
     /**
      * 方法参数解决器：根据请求头中的cookie拿到token，再利用token从redis中取到student放入参数中
+     *
      * @param methodParameter
      * @param modelAndViewContainer
      * @param nativeWebRequest
@@ -51,14 +50,14 @@ public class UserInfoHandlerMethodArgumentResolver implements HandlerMethodArgum
 
         String token = getTokenByCookies(request, Const.COOKIE_NAME_TOKEN);
         if (token == null) return null;
-        //todo 从redis中取对象
-        Student student = userService.getStudentByToken(token);
-        userService.addCookie(response,token,student);
+        Student student = userService.getStudentByToken(token, response);
+        if (student == null) throw new GlobalException(CodeMsg.TOKEN_INVALID);
         return student;
     }
 
     /**
      * 从前端传入的cookie中拿到token,约定用cookieName做key，token是对应的value值。
+     *
      * @param request
      * @param cookieName
      * @return

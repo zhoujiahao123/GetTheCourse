@@ -1,12 +1,13 @@
 package com.uestc.getthecourse.controller;
 
+import com.uestc.getthecourse.config.UserInfo;
 import com.uestc.getthecourse.entity.Course;
+import com.uestc.getthecourse.entity.Student;
+import com.uestc.getthecourse.exception.GlobalException;
+import com.uestc.getthecourse.result.CodeMsg;
 import com.uestc.getthecourse.result.Result;
 import com.uestc.getthecourse.service.CourseService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -23,11 +24,11 @@ public class CourseController {
     CourseService courseService;
 
     /**
-     *
-     * @return
+     * @return 返回所有的课程
      */
-    @PostMapping("/list_all")
+    @GetMapping("/list_all")
     public Result<List<Course>> listAllCourse() {
         return courseService.listAllCourse();
     }
+
 }
